@@ -1,0 +1,20 @@
+{
+  "name": "مواعيدي v2.2",
+  "short_name": "مواعيدي",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070b14",
+  "theme_color": "#111827",
+  "description": "مساعد شخصي للمواعيد والراتب وأيام العمل والوثائق والسيارة",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
