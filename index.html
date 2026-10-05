@@ -87,7 +87,7 @@
 
 <section id="more" class="page"><div class="page-title"><h2>☰ المزيد</h2></div><div class="menu-grid">
 <button data-go="documents">📄 الوثائق والسيارة</button><button data-go="fitness">🏃 الرياضة والصحة</button><button data-go="goals">🎯 أهدافي اليومية</button><button data-go="holidays">🇩🇿 العطل والمناسبات</button><button data-go="calculator">🧮 الحسابات</button><button data-go="profile">👤 بياناتي والعمل</button><button id="exportData">📤 تصدير نسخة احتياطية</button><label class="import-btn">📥 استيراد نسخة<input id="importData" type="file" accept="application/json" hidden></label>
-</div><div class="about"><strong>مواعيدي v2.0</strong><br>مساعد شخصي للمواعيد والراتب وأيام العمل والوثائق والسيارة.</div></section>
+</div><div class="about"><strong>مواعيدي v2.1.1</strong><br>مساعد شخصي للمواعيد والراتب وأيام العمل والوثائق والسيارة.</div></section>
 </main>
 <nav class="bottom-nav"><button class="nav-item active" data-go="home">🏠<span>الرئيسية</span></button><button class="nav-item" data-go="calendar">📅<span>التقويم</span></button><button class="nav-item" data-go="reminders">🔔<span>مواعيدي</span></button><button class="nav-item" data-go="documents">📄<span>وثائقي</span></button><button class="nav-item" data-go="fitness">🏃<span>رياضتي</span></button><button class="nav-item" data-go="goals">🎯<span>أهدافي</span></button><button class="nav-item" data-go="more">☰<span>المزيد</span></button></nav>
 </div>
@@ -103,8 +103,7 @@
 <div id="docModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>إضافة وثيقة / سيارة</h3><button id="closeDocModal">×</button></div>
 <label>الاسم<input id="docTitle" placeholder="مثلاً: تأمين السيارة"></label><label>النوع<select id="docType"><option value="document">وثيقة</option><option value="car">سيارة</option></select></label><label>تاريخ الانتهاء<input id="docDate" type="date"></label><label>التنبيه قبل الانتهاء<select id="docBefore"><option value="7">أسبوع</option><option value="15">15 يوم</option><option value="30" selected>30 يوم</option><option value="60">60 يوم</option></select></label><label>ملاحظات<input id="docNote" placeholder="اختياري"></label>
 <button id="saveDoc" class="primary-btn full">حفظ</button></div></div>
-<script src="app.js"></script>
-
 <div id="workoutModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>إضافة تمرين</h3><button id="closeWorkoutModal" class="icon-btn">×</button></div><label>اليوم<select id="workoutDay"><option value="0">الأحد</option><option value="1">الإثنين</option><option value="2">الثلاثاء</option><option value="3">الأربعاء</option><option value="4">الخميس</option><option value="5">الجمعة</option><option value="6">السبت</option></select></label><label>نوع الرياضة<input id="workoutType" placeholder="كارديو"></label><label>الوقت<input id="workoutTime" type="time" value="19:00"></label><label>المدة بالدقائق<input id="workoutDuration" type="number" min="1" value="45"></label><button id="saveWorkout" class="primary-btn full">حفظ</button></div></div>
 <div id="goalModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>إضافة هدف يومي</h3><button id="closeGoalModal" class="icon-btn">×</button></div><label>الهدف<input id="goalTitle" placeholder="مثلاً: قراءة الورد القرآني"></label><label>الوقت (اختياري)<input id="goalTime" type="time"></label><button id="saveGoal" class="primary-btn full">إضافة</button></div></div>
+<script src="app.js?v=2.1.1"></script>
 </body></html>
