@@ -1,7 +1,7 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const KEY="mawaeedi_v20", OLDKEY="mawaeedi_v14", pad=n=>String(n).padStart(2,"0");
+const KEY="mawaeedi_v211", OLDKEY="mawaeedi_v14", pad=n=>String(n).padStart(2,"0");
 const isoToday=()=>{const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
-let state=JSON.parse(localStorage.getItem(KEY)||"null")||JSON.parse(localStorage.getItem(OLDKEY)||'{"profile":{},"reminders":[],"documents":[],"settings":{}}');
+let state=JSON.parse(localStorage.getItem(KEY)||"null")||JSON.parse(localStorage.getItem("mawaeedi_v20")||"null")||JSON.parse(localStorage.getItem(OLDKEY)||'{"profile":{},"reminders":[],"documents":[],"settings":{}}');
 state.profile??={}; state.reminders??=[]; state.documents??=[]; state.settings??={};
 let calendarDate=new Date(), reminderFilter="all", docFilter="all";
 
@@ -65,8 +65,11 @@ $("#importData").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new
 $("#clearData").onclick=()=>{if(confirm("سيتم حذف كل بيانات التطبيق من هذا الهاتف. هل أنت متأكد؟")){localStorage.removeItem(KEY);localStorage.removeItem(OLDKEY);location.reload()}};
 
 // ===== الرياضة والأهداف اليومية =====
-state.fitness??={weight:null,height:null,weightHistory:[],workouts:[]};
-state.goals??={items:[],date:isoToday()};
+state.fitness=Object.assign({weight:null,height:null,weightHistory:[],workouts:[]},state.fitness||{});
+state.fitness.weightHistory=Array.isArray(state.fitness.weightHistory)?state.fitness.weightHistory:[];
+state.fitness.workouts=Array.isArray(state.fitness.workouts)?state.fitness.workouts:[];
+state.goals=Object.assign({items:[],date:isoToday()},state.goals||{});
+state.goals.items=Array.isArray(state.goals.items)?state.goals.items:[];
 if(!state.fitness.workouts.length) state.fitness.workouts=[
  {id:"default-sat",day:6,type:"كارديو",time:"19:00",duration:45},
  {id:"default-mon",day:1,type:"كارديو",time:"19:00",duration:45},
@@ -90,5 +93,5 @@ function ensureGoalsDay(){const t=isoToday();if(state.goals.date!==t){state.goal
 function renderGoals(){ensureGoalsDay();const a=state.goals.items,done=a.filter(x=>x.done).length,p=a.length?Math.round(done/a.length*100):0;$("#goalProgressText").textContent=`${done} / ${a.length}`;$("#goalProgressBar").style.width=p+"%";$("#goalList").innerHTML=a.length?a.map(x=>`<div class="goal-item ${x.done?"done":""}"><button class="goal-check" onclick="toggleGoal('${x.id}')">${x.done?"✓":""}</button><div class="goal-text"><strong>${escapeHtml(x.title)}</strong>${x.time?`<small>⏰ ${x.time}</small>`:""}</div><button class="mini danger-mini" onclick="deleteGoal('${x.id}')">×</button></div>`).join(""):"<div class='empty'>أضف أهدافك اليومية. مثال: صلاة الفجر، الورد القرآني، الرياضة، شرب الماء.</div>"}
 $("#addGoalBtn").onclick=()=>{$("#goalModal").classList.remove("hidden");$("#goalTitle").value="";$("#goalTime").value=""};$("#closeGoalModal").onclick=()=>$("#goalModal").classList.add("hidden");$("#saveGoal").onclick=()=>{const title=$("#goalTitle").value.trim();if(!title)return alert("أدخل الهدف");ensureGoalsDay();state.goals.items.push({id:crypto.randomUUID?crypto.randomUUID():Date.now().toString(),title,time:$("#goalTime").value,done:false});save();$("#goalModal").classList.add("hidden");renderGoals()};window.toggleGoal=id=>{ensureGoalsDay();const x=state.goals.items.find(g=>g.id===id);if(x){x.done=!x.done;save();renderGoals()}};window.deleteGoal=id=>{state.goals.items=state.goals.items.filter(x=>x.id!==id);save();renderGoals()};
 
-function init(){loadProfile();renderHome();renderHolidays();renderCalendar();renderReminders();renderDocuments();renderFitness();renderGoals();["dateFrom","dateTo","addDate"].forEach(id=>$("#"+id).value=isoToday());setInterval(()=>{renderClock();checkReminders()},1000);checkReminders()}
+function init(){save();loadProfile();renderHome();renderHolidays();renderCalendar();renderReminders();renderDocuments();renderFitness();renderGoals();["dateFrom","dateTo","addDate"].forEach(id=>$("#"+id).value=isoToday());setInterval(()=>{renderClock();checkReminders()},1000);checkReminders()}
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));init();
