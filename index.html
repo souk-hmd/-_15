@@ -1,10 +1,94 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111827"><meta name="description" content="HMD Service - خدمات حاسي مسعود"><link rel="manifest" href="./manifest.json"><link rel="stylesheet" href="./style.css"><title>HMD Service | خدمات حاسي مسعود</title></head><body>
-<header><div class="logo"><b>HMD</b> Service</div><nav><button onclick="go('home')">الرئيسية</button><button onclick="go('services')">الخدمات</button><button onclick="go('market')">السوق</button><button onclick="go('account')">حسابي</button><a href="./admin.html">الإدارة</a></nav></header>
-<main>
-<section id="home" class="page active"><div class="hero"><div><small>📍 حاسي مسعود</small><h1>كل خدمات حاسي مسعود<br><em>في مكان واحد.</em></h1><p>ابحث عن حرفي، مؤسسة، نقل، صيانة، كراء أو أي خدمة تحتاجها.</p><button class="primary" onclick="go('services')">🔎 ابحث عن خدمة</button> <button onclick="openAdd()">➕ أضف خدمتك مجاناً</button></div><div class="stats"><strong id="count">0</strong><span>خدمة متاحة</span><strong>10</strong><span>فئات</span></div></div><div class="search"><input id="homeQ" placeholder="مثلاً: ميكانيكي، تكييف، سباك..." onkeydown="if(event.key==='Enter')search(this.value)"><button onclick="search(document.getElementById('homeQ').value)">بحث</button></div><h2>ماذا تحتاج؟</h2><div id="cats" class="cats"></div><h2>⭐ خدمات مميزة</h2><div id="featured" class="cards"></div><h2>🆕 أحدث الخدمات</h2><div id="latest" class="cards"></div></section>
-<section id="services" class="page"><h1>الخدمات</h1><p>ابحث واختر الخدمة التي تحتاجها.</p><div class="filters"><input id="q" placeholder="ابحث عن خدمة أو نشاط..." oninput="render()"><select id="cat" onchange="render()"><option value="">كل الفئات</option></select></div><div id="list" class="cards"></div></section>
-<section id="market" class="page"><h1>🛒 السوق</h1><div class="box">قسم البيع والشراء القديم محفوظ. سنربطه لاحقاً بإعلانات Souk HMD بدون حذف بياناتك.</div></section>
-<section id="account" class="page"><h1>👤 حسابي</h1><div id="accountBox" class="box"></div></section>
-</main><footer>HMD Service © 2026 — خدمات حاسي مسعود</footer>
-<div id="modal" class="modal"><div class="modalbox"><button class="x" onclick="closeModal()">×</button><div id="modalBody"></div></div></div><div id="toast"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./app.js"></script></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="description" content="مواعيدي — المواعيد والوثائق والسيارة والراتب وأيام العمل">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css"><title>مواعيدي</title>
+</head>
+<body>
+<div class="app-shell">
+<header class="topbar">
+  <div><div class="eyebrow">MAWAEEDI</div><h1>مواعيدي <span>v2.0</span></h1></div>
+  <button id="notifyBtn" class="icon-btn" title="التنبيهات">🔔</button>
+</header>
+<main id="app">
+<section id="home" class="page active">
+  <div class="hero"><div id="todayText"></div><div id="clock" class="clock">--:--:--</div></div>
+  <div class="dashboard-grid">
+    <article class="card accent-card"><div class="card-head"><span>💼 حالة العمل</span><button data-go="profile">تعديل</button></div><div id="workStatus" class="big-value">اضبط نظام عملك</div><div id="workDetails" class="muted"></div></article>
+    <article class="card"><div class="card-head"><span>💰 راتبي</span><button data-go="profile">تعديل</button></div><div id="salaryValue" class="big-value">—</div><div id="salaryDetails" class="muted"></div></article>
+    <article class="card"><div class="card-head"><span>👤 عمري</span></div><div id="ageValue" class="big-value">أدخل تاريخ الميلاد</div><div id="ageDetails" class="muted"></div></article>
+    <article class="card"><div class="card-head"><span>⏰ أقرب موعد</span></div><div id="nextReminder" class="big-value">لا يوجد</div><div id="nextReminderDetails" class="muted"></div></article>
+  </div>
+  <section class="section"><div class="section-title"><h2>📊 نظرة سريعة</h2></div>
+    <div class="stats-grid"><div class="stat"><b id="upcomingCount">0</b><span>مواعيد قادمة</span></div><div class="stat"><b id="dueCount">0</b><span>تنبيهات قريبة</span></div><div class="stat"><b id="daysWorked">0</b><span>أيام عمل</span></div><div class="stat"><b id="daysOff">0</b><span>أيام راحة</span></div></div>
+  </section>
+  <section class="section"><div class="section-title"><h2>📌 أقرب مواعيدك</h2><button class="text-btn" data-go="reminders">عرض الكل</button></div><div id="upcomingList" class="list"></div></section>
+  <section class="section"><div class="section-title"><h2>📄 وثائق وسيارة</h2><button class="text-btn" data-go="documents">إدارة</button></div><div id="dueList" class="list"></div></section>
+  <section class="section"><div class="section-title"><h2>🇩🇿 أقرب عطلة</h2></div><div id="holidayCard" class="wide-card"></div></section>
+</section>
+
+<section id="calendar" class="page">
+  <div class="page-title"><h2>📅 التقويم</h2><button id="todayCalendar" class="small-btn">اليوم</button></div>
+  <div class="calendar-toolbar"><button id="prevMonth">‹</button><strong id="monthTitle"></strong><button id="nextMonth">›</button></div>
+  <div class="weekdays"><span>الأحد</span><span>الإثنين</span><span>الثلاثاء</span><span>الأربعاء</span><span>الخميس</span><span>الجمعة</span><span>السبت</span></div>
+  <div id="calendarGrid" class="calendar-grid"></div><div id="selectedDay" class="selected-day"></div>
+</section>
+
+<section id="reminders" class="page">
+  <div class="page-title"><h2>🔔 مواعيدي</h2><button id="addReminderBtn" class="primary-btn">+ إضافة</button></div>
+  <input id="reminderSearch" class="search" placeholder="🔎 بحث في المواعيد">
+  <div class="filter-row"><button class="filter active" data-filter="all">الكل</button><button class="filter" data-filter="upcoming">القادمة</button><button class="filter" data-filter="done">المكتملة</button></div>
+  <div id="reminderList" class="list"></div>
+</section>
+
+<section id="documents" class="page">
+  <div class="page-title"><h2>📄 الوثائق والسيارة</h2><button id="addDocBtn" class="primary-btn">+ إضافة</button></div>
+  <div class="tabs"><button class="doc-tab active" data-docfilter="all">الكل</button><button class="doc-tab" data-docfilter="document">وثائق</button><button class="doc-tab" data-docfilter="car">سيارة</button></div>
+  <div id="documentList" class="list"></div>
+</section>
+
+<section id="calculator" class="page">
+  <div class="page-title"><h2>🧮 الحسابات</h2></div>
+  <div class="tool-card"><h3>💰 حساب الراتب والأيام</h3><div class="form-grid">
+    <label>الراتب الشهري<input id="salaryCalc" type="number" min="0" placeholder="مثلاً 70000"></label>
+    <label>أيام الشهر<input id="salaryDays" type="number" min="1" value="30"></label>
+  </div><button id="calcSalary" class="primary-btn full">احسب</button><div id="salaryResult" class="result-box">أدخل الراتب</div></div>
+  <div class="tool-card"><h3>📆 الفرق بين تاريخين</h3><div class="form-grid"><label>من<input id="dateFrom" type="date"></label><label>إلى<input id="dateTo" type="date"></label></div><button id="calcDates" class="primary-btn full">احسب المدة</button><div id="dateResult" class="result-box">اختر تاريخين</div></div>
+  <div class="tool-card"><h3>➕ إضافة مدة إلى تاريخ</h3><div class="form-grid"><label>التاريخ<input id="addDate" type="date"></label><label>عدد الأيام<input id="addDays" type="number" min="0" value="30"></label></div><button id="calcAdd" class="primary-btn full">احسب التاريخ</button><div id="addResult" class="result-box">أدخل البيانات</div></div>
+</section>
+
+<section id="holidays" class="page"><div class="page-title"><h2>🇩🇿 العطل والمناسبات</h2></div><div class="notice">التواريخ الدينية الموسومة «تقريبي» قابلة للتعديل بعد الإعلان الرسمي في الجزائر.</div><div id="holidayList" class="list"></div></section>
+
+<section id="profile" class="page">
+  <div class="page-title"><h2>👤 بياناتي والعمل</h2></div>
+  <div class="tool-card"><label>الاسم<input id="userName" type="text" placeholder="مثلاً: عبد العزيز"></label><label>تاريخ الميلاد<input id="birthDate" type="date"></label></div>
+  <div class="tool-card"><h3>💼 نظام العمل</h3><div class="form-grid"><label>أيام العمل<input id="workDays" type="number" min="1" value="20"></label><label>أيام الراحة<input id="offDays" type="number" min="0" value="20"></label></div><label>بداية أول يوم في دورة العمل<input id="cycleStart" type="date"></label><div class="muted">مثال 20/20: أدخل 20 عمل و20 راحة وتاريخ بداية أول يوم عمل.</div></div>
+  <div class="tool-card"><h3>💰 الراتب</h3><label>الراتب الشهري (دج)<input id="monthlySalary" type="number" min="0" placeholder="70000"></label><label>يوم صرف الراتب<input id="payDay" type="number" min="1" max="31" value="30"></label></div>
+  <div class="tool-card"><h3>⚙️ الإعدادات</h3><button id="requestNotify" class="secondary-btn full">السماح بالتنبيهات</button><button id="clearData" class="danger-btn full">حذف بيانات التطبيق</button></div>
+  <button id="saveProfile" class="primary-btn full">حفظ كل البيانات</button><div id="profileSaved" class="success-msg"></div>
+</section>
+
+<section id="more" class="page"><div class="page-title"><h2>☰ المزيد</h2></div><div class="menu-grid">
+<button data-go="documents">📄 الوثائق والسيارة</button><button data-go="holidays">🇩🇿 العطل والمناسبات</button><button data-go="calculator">🧮 الحسابات</button><button data-go="profile">👤 بياناتي والعمل</button><button id="exportData">📤 تصدير نسخة احتياطية</button><label class="import-btn">📥 استيراد نسخة<input id="importData" type="file" accept="application/json" hidden></label>
+</div><div class="about"><strong>مواعيدي v2.0</strong><br>مساعد شخصي للمواعيد والراتب وأيام العمل والوثائق والسيارة.</div></section>
+</main>
+<nav class="bottom-nav"><button class="nav-item active" data-go="home">🏠<span>الرئيسية</span></button><button class="nav-item" data-go="calendar">📅<span>التقويم</span></button><button class="nav-item" data-go="reminders">🔔<span>مواعيدي</span></button><button class="nav-item" data-go="documents">📄<span>وثائقي</span></button><button class="nav-item" data-go="more">☰<span>المزيد</span></button></nav>
+</div>
+
+<div id="modal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>إضافة موعد</h3><button id="closeModal">×</button></div>
+<label>العنوان<input id="remTitle" type="text" placeholder="مثلاً: موعد الطبيب"></label><div class="form-grid"><label>التاريخ<input id="remDate" type="date"></label><label>الوقت<input id="remTime" type="time" value="09:00"></label></div>
+<label>النوع<select id="remType"><option value="appointment">موعد</option><option value="document">وثيقة</option><option value="car">سيارة</option><option value="money">مال / فاتورة</option><option value="birthday">عيد ميلاد</option><option value="other">آخر</option></select></label>
+<label>التنبيه قبل الموعد<select id="remBefore"><option value="0">في الموعد</option><option value="60">قبل ساعة</option><option value="1440" selected>قبل يوم</option><option value="10080">قبل أسبوع</option><option value="43200">قبل 30 يوم</option></select></label>
+<label>التكرار<select id="remRepeat"><option value="none">بدون تكرار</option><option value="daily">يومي</option><option value="weekly">أسبوعي</option><option value="monthly">شهري</option><option value="yearly">سنوي</option></select></label>
+<label>ينتهي التكرار (اختياري)<input id="remRepeatEnd" type="date"></label>
+<button id="saveReminder" class="primary-btn full">حفظ الموعد</button></div></div>
+
+<div id="docModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>إضافة وثيقة / سيارة</h3><button id="closeDocModal">×</button></div>
+<label>الاسم<input id="docTitle" placeholder="مثلاً: تأمين السيارة"></label><label>النوع<select id="docType"><option value="document">وثيقة</option><option value="car">سيارة</option></select></label><label>تاريخ الانتهاء<input id="docDate" type="date"></label><label>التنبيه قبل الانتهاء<select id="docBefore"><option value="7">أسبوع</option><option value="15">15 يوم</option><option value="30" selected>30 يوم</option><option value="60">60 يوم</option></select></label><label>ملاحظات<input id="docNote" placeholder="اختياري"></label>
+<button id="saveDoc" class="primary-btn full">حفظ</button></div></div>
+<script src="app.js"></script>
+</body></html>
